@@ -22,26 +22,10 @@ const galleryMarkup = createGalleryItems(galleryItems);
 galleryElements.innerHTML = galleryMarkup;
 
 
-galleryElements.addEventListener("click", stopAction);
+galleryElements.addEventListener("click", (event) => { event.preventDefault() });
 
-function stopAction(event) {
-    blockDefaultAction(event);
-    if (event.target.nodeName !== "IMG") {
-        return;
-    }
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData:
+        'alt', captionDelay: 250
+});
 
-    const lightbox = new SimpleLightbox('.gallery a', {
-        captionsData:
-            'alt', captionDelay: 250
-    });
-
-    galleryElements.addEventListener("keydown", (event) => {
-        if (event.code === "Escape") {
-            instance.close();
-        }
-    });
-}
-
-function blockDefaultAction(event) {
-    event.preventDefault();
-}

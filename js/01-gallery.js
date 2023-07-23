@@ -21,28 +21,33 @@ function createGalleryItems(items) {
 }
 
 const galleryMarkup = createGalleryItems(galleryItems);
-galleryElements.innerHTML = galleryMarkup;
+galleryElements.insertAdjacentHTML('afterbegin', galleryMarkup);
 
 
 galleryElements.addEventListener("click", stopAction);
 
 function stopAction(event) {
-    blockDefaultAction(event);
+    event.preventDefault();
     if (event.target.nodeName !== "IMG") {
         return;
     }
     const instance = basicLightbox.create(`
    <img src="${event.target.dataset.source}" width="800" height="600">
-  `)
-    instance.show()
+  `, {
+        onShow: (instance) => console.log('onShow', closeGallery),
+        onClose: (instance) => console.log('onClose', closeGallery)
+    })
+    instance.show(instance)
 
-    galleryElements.addEventListener("keydown", (event) => {
+    galleryElements.addEventListener("keydown", closeGallery);
+
+
+    function closeGallery(event) {
         if (event.code === "Escape") {
-            instance.close();
+            event.onClose
         }
-    });
-}
-
-function blockDefaultAction(event) {
-    event.preventDefault();
+        else {
+            event.onShow
+        }
+    }
 }
