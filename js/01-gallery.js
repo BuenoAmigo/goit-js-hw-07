@@ -34,8 +34,8 @@ function stopAction(event) {
     const instance = basicLightbox.create(`
    <img src="${event.target.dataset.source}" width="800" height="600">
   `, {
-        onShow: (instance) => console.log('onShow', closeGallery),
-        onClose: (instance) => console.log('onClose', closeGallery)
+        onShow: (instance) => window.addEventListener('onShow', closeGallery),
+        onClose: (instance) => window.removeEventListener('onClose', closeGallery)
     })
     instance.show(instance)
 
@@ -44,10 +44,11 @@ function stopAction(event) {
 
     function closeGallery(event) {
         if (event.code === "Escape") {
-            event.onClose
+            instance.close()
+            // console.log(event.code)
         }
-        else {
-            event.onShow
-        }
+        // else {
+        //     event.onShow
+        // }
     }
 }
